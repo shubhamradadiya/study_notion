@@ -11,6 +11,12 @@
 # production
 /build
 
+.env
+.idea
+**/node_modules
+data
+yarn.lock   
+
 # misc
 .DS_Store
 .env.local
