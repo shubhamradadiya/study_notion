@@ -7,16 +7,16 @@ const CodeBlocks = ({position, heading ,subheading, ctabtn1, ctabtn2 , codeblock
   return (
 
     <div 
-    className={`flex ${position} my-20 justify-between `}
+    className={` mx-auto flex justify-between   ${position} my-20  gap-10 `}
     >
        {/* part 1 */}
         <div className=' w-[50%] flex flex-col gap-8'>
             {heading}
-            <div className=' text-richblack-300 font-bold w-[90%]'>
+            <div className=' w-[50%] text-richblack-300 font-bold'>
                 {subheading}
             </div>
             <div
-            className='flex gap-7 mt-7 ite'
+            className='flex gap-7 mt-7 items-center '
             >
                 <CTAbutton
                 activate={ctabtn1.active}
@@ -40,10 +40,10 @@ const CodeBlocks = ({position, heading ,subheading, ctabtn1, ctabtn2 , codeblock
 
         {/* part 2 */}
         
-        <div className=' h-fit  flex flex-row text-10[px] w-[100%] py-4 lg:w-[500px] bg-richblack-700  backdrop-filter bg-transparent 
-           rounded-xl '> 
+        <div className=' h-fit  flex flex-row text-10[px] w-[100%] py-4 lg:w-[500px]
+           rounded-xl  shadow-2xl shadow-blue-500/20'> 
 
-        <div className='text-center flex flex-col w-[10%] text-richblack-400 font-inter font-bold'>
+        <div className='text-center flex flex-col w-[10%] text-richblack-400 font-inter font-bold backdrop-blur-sm '>
             <p>1</p>
             <p>2</p>
             <p>3</p>
@@ -57,7 +57,7 @@ const CodeBlocks = ({position, heading ,subheading, ctabtn1, ctabtn2 , codeblock
             <p>11</p>
         </div>
 
-        <div className={`w-[90%] flex flex-col gap-2 font-bold font-mono ${codeColor} pr-2`}>
+        <div className={`w-[90%] flex flex-col gap-2 font-bold font-mono ${codeColor} pr-2 `}>
            <TypeAnimation
             sequence={[codeblock, 2000, ""]}
             repeat={Infinity}
