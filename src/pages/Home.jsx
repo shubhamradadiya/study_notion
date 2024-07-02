@@ -9,6 +9,7 @@ import Footer from '../components/common/Footer';
 import InstructorSection from '../components/core/HomePage/InstructorSection';
 import TimelineSection from '../components/core/HomePage/TimelineSection';
 import LearningLanguageSection from '../components/core/HomePage/LearningLanguageSection';
+import ExploreMore from '../components/core/HomePage/ExploreMore';
 
 const  Home = ()=>{
     
@@ -127,6 +128,7 @@ const  Home = ()=>{
             />
         </div>
 
+            <ExploreMore/>
            </div>
             
         {/* section 2 */}
