@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux'
 
 import { useState } from 'react'
 import {IoIosArrowDropdownCircle} from "react-icons/io"
+import { apiConnector } from '../../services/apiconnector'
+import { categories } from '../../services/apis'
 
 const subLinks = [
     {
@@ -30,22 +32,22 @@ const Navbar = () => {
 
     const [ssubLinks, setSsubLinks]  = useState([]);
 
-    // const fetchSublinks = async() => {
-    //     try{
-    //         const result = await apiConnector("GET", categories.CATEGORIES_API);
-    //         console.log("Printing Sublinks result:" , result);
-    //         setSsubLinks(result.data.data);
-    //     }
-    //     catch(error) {
-    //         console.log("Could not fetch the category list");
-    //     }
-    // }
+    const fetchSublinks = async() => {
+        try{
+            const result = await apiConnector("GET", categories.CATEGORIES_API);
+            console.log("Printing Sublinks result:" , result);
+            setSsubLinks(result.data.data);
+        }
+        catch(error) {
+            console.log("Could not fetch the category list");
+        }
+    }
 
 
-    // useEffect( () => {
-    //     console.log("PRINTING TOKEN", token);
-    //     fetchSublinks();
-    // },[] )
+    useEffect( () => {
+        console.log("PRINTING TOKEN", token);
+        fetchSublinks();
+    },[] )
 
 
 
