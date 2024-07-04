@@ -5,9 +5,16 @@ import { formToJSON } from 'axios'
 import { type } from '@testing-library/user-event/dist/type'
 import Tab from '../../common/Tab'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import { useDispatch } from 'react-redux'
+import { setSignupData } from '../../../slices/authSlice'
+import { senotp } from '../../../services/operations/authAPI'
+import { useNavigate } from 'react-router-dom'
 
 
 const SignupForm = () => {
+
+  const  dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [accountType , setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
 
@@ -43,8 +50,11 @@ const SignupForm = () => {
       ...FormData,
       accountType
     }
-
+    console.log(signupData)
+    //store data in slice
+    dispatch(setSignupData(signupData))
     //api call
+    dispatch(senotp(FormData.email, navigate));
 
     //Reset the  files list
     setAccountType(ACCOUNT_TYPE.STUDENT);
@@ -78,7 +88,7 @@ const SignupForm = () => {
           <Tab tabData={tabData} accountType={accountType} setAccountType={setAccountType} />
 
           {/* form */}
-          <form className=' flex w-full flex-col gap-y-3 mt-4'>
+          <form onSubmit={handleOnSubmit} className=' flex w-full flex-col gap-y-3 mt-4'>
             <div className='flex gap-x-2 w-full'>
             <label className=''>
               <p>
@@ -149,9 +159,10 @@ const SignupForm = () => {
                       className="absolute right-3 top-[38px] z-[10] cursor-pointer"
                     >
                       {showPassword ? (
-                        <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                      ) : (
                         <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+                        
+                      ) : (
+                        <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
                       )}
                     </span>
 
@@ -163,7 +174,7 @@ const SignupForm = () => {
 
                     <input
                       required
-                      type={confirmPassword ? "text" : "password"}
+                      type={showConfirmPassword ? "text" : "password"}
                       name="confirmPassword"
                       value={confirmPassword}
                       onChange={handleOnChange}
@@ -179,9 +190,10 @@ const SignupForm = () => {
                       className="absolute right-3 top-[38px] z-[10] cursor-pointer"
                     >
                       {showConfirmPassword ? (
-                        <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                      ) : (
                         <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+                      ) : (
+                        <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
+                     
                       )}
                     </span>
 
