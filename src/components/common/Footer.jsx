@@ -119,7 +119,9 @@ const Footer = () => {
                
                     {FooterLink2.map((element,index)=>{
                         return(
-                            <div className='flex flex-col gap-2'>
+                            <div 
+                             key={index}
+                            className='flex flex-col gap-2'>
                                 <div ><h1 className=" text-richblack-50 font-bold ">{element.title}</h1></div>
                                 <div
                                  className='flex flex-col gap-2'

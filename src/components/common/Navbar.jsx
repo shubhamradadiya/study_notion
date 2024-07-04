@@ -12,16 +12,16 @@ import {IoIosArrowDropdownCircle} from "react-icons/io"
 import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/apis'
 
-const subLinks = [
-    {
-        title: "python",
-        link:"/catalog/python"
-    },
-    {
-        title: "web dev",
-        link:"/catalog/web-development"
-    },
-];
+// const subLinks = [
+//     {
+//         title: "python",
+//         link:"/catalog/python"
+//     },
+//     {
+//         title: "web dev",
+//         link:"/catalog/web-development"
+//     },
+// ];
 
 
 const Navbar = () => {
@@ -30,13 +30,13 @@ const Navbar = () => {
     const {totalItems} = useSelector( (state) => state.cart )
     const location = useLocation();
 
-    const [ssubLinks, setSsubLinks]  = useState([]);
+    const [subLinks, setsubLinks]  = useState([]);
 
     const fetchSublinks = async() => {
         try{
             const result = await apiConnector("GET", categories.CATEGORIES_API);
-            console.log("Printing Sublinks result:" , result);
-            setSsubLinks(result.data.data);
+            console.log(result);
+            setsubLinks(result.data.data);
         }
         catch(error) {
             console.log("Could not fetch the category list");
@@ -76,7 +76,7 @@ const Navbar = () => {
                                 <IoIosArrowDropdownCircle/>
 
                                 <div className='invisible absolute left-[50%]
-                                    translate-x-[-50%] translate-y-[80%]
+                                    translate-x-[-50%] translate-y-[20%] z-20
                                  top-[50%]
                                 flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
                                 opacity-0 transition-all duration-200 group-hover:visible
@@ -91,7 +91,7 @@ const Navbar = () => {
                                     subLinks.length ? (
                                             subLinks.map( (subLink, index) => (
                                                 <Link to={`${subLink.link}`} key={index}>
-                                                    <p>{subLink.title}</p>
+                                                    <p>{subLink.name}</p>
                                                 </Link>
                                             ) )
                                     ) : (<div></div>)
