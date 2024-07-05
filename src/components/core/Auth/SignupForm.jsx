@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { ACCOUNT_TYPE } from '../../../utils/constants'
 import toast from 'react-hot-toast'
-import { formToJSON } from 'axios'
-import { type } from '@testing-library/user-event/dist/type'
 import Tab from '../../common/Tab'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useDispatch } from 'react-redux'
 import { setSignupData } from '../../../slices/authSlice'
-import { senotp } from '../../../services/operations/authAPI'
+import { sendotp } from '../../../services/operations/authAPI'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -54,7 +52,7 @@ const SignupForm = () => {
     //store data in slice
     dispatch(setSignupData(signupData))
     //api call
-    dispatch(senotp(FormData.email, navigate));
+    dispatch(sendotp(FormData.email, navigate));
 
     //Reset the  files list
     setAccountType(ACCOUNT_TYPE.STUDENT);
