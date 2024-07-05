@@ -35,7 +35,7 @@ const Navbar = () => {
     const fetchSublinks = async() => {
         try{
             const result = await apiConnector("GET", categories.CATEGORIES_API);
-            console.log(result);
+
             setsubLinks(result.data.data);
         }
         catch(error) {
@@ -45,7 +45,7 @@ const Navbar = () => {
 
 
     useEffect( () => {
-        console.log("PRINTING TOKEN", token);
+
         fetchSublinks();
     },[] )
 

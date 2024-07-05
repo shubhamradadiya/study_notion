@@ -1,11 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import { Navigate, Route, Routes, useSearchParams } from 'react-router-dom';
+import { Navigate, Route, Routes} from 'react-router-dom';
 import Home from './pages/Home';
 import Navbar from './components/common/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { useSelector } from 'react-redux';
+import VerifyEmail from './pages/VerifyEmail';
 
 function App() {
   return (
@@ -26,6 +27,14 @@ function App() {
           </OpenRoute>
         }/>
 
+    <Route
+          path="verify-email"
+          element={
+            <OpenRoute>
+              <VerifyEmail />
+            </OpenRoute>
+          }
+        /> 
 
       </Routes>
     
