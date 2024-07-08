@@ -188,3 +188,22 @@ export function resetPassword(password , confirmPassword , token, navigate) {
     toast.dismiss(toastId)
    }
 }
+
+
+export function logout (navigate){
+    return (dispatch)=>{
+      dispatch(setLoading(true));
+      try {
+        dispatch(setToken(null));
+        dispatch(setUser(null));
+        localStorage.removeItem("tokens");
+        localStorage.removeItem("user");
+        
+        toast.success("Logged Out");
+        navigate("/");
+
+      } catch (error) {
+        
+      }
+    }
+}
