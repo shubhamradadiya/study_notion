@@ -11,6 +11,7 @@ import { useState } from 'react'
 import {IoIosArrowDropdownCircle} from "react-icons/io"
 import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/apis'
+import ProfileDropdown from '../core/Auth/ProfileDropDown'
 
 // const subLinks = [
 //     {
@@ -142,7 +143,9 @@ const Navbar = () => {
                 )
             }
 
-            
+            { token !== null &&  <ProfileDropdown/>
+
+            }
         </div>
 
 
