@@ -12,6 +12,7 @@ import {IoIosArrowDropdownCircle} from "react-icons/io"
 import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/apis'
 import ProfileDropdown from '../core/Auth/ProfileDropDown'
+import { GrCart } from "react-icons/gr";
 
 // const subLinks = [
 //     {
@@ -121,8 +122,23 @@ const Navbar = () => {
 
 
         {/* Login/SignUp/Dashboard */}
-        <div className='flex gap-x-4 items-center'>
+        <div className='flex gap-x-4 items-center text-richblack-50'>
 
+            
+        {
+                user && user?.accountType != "Instructor" && (
+                    <Link to="/dashboard/cart" className='relative'>
+                        <GrCart/>
+                        {
+                            totalItems > 0 && (
+                                <span>
+                                    {totalItems}
+                                </span>
+                            )
+                        }
+                    </Link>
+                )
+            }
          
             {
                 token === null && (
