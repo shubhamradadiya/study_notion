@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import VerifyEmail from './pages/VerifyEmail';
 import ForgotPassword from './pages/ForgotPassword';
 import UpdatePassword from './pages/UpdatePassword';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -55,9 +56,21 @@ function App() {
         </OpenRoute>
        }
        />
-        
       </Routes>
-    
+
+
+      <Route
+        element={
+          <PrivateRoute>
+            <Dashboard/>
+          </PrivateRoute>
+     }
+     >
+        
+     </Route>
+
+
+
     </div>
   );
 }
@@ -71,6 +84,18 @@ const OpenRoute =({children})=>{
   )
 }
 
+
+
+const PrivateRoute = ({children}) => {
+
+  const {token} = useSelector((state) => state.auth);
+
+  if(token !== null)
+      return children
+  else
+      return <Navigate to="/login" />
+
+}
 
 
 export default App;
