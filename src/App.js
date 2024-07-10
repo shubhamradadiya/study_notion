@@ -10,6 +10,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import ForgotPassword from './pages/ForgotPassword';
 import UpdatePassword from './pages/UpdatePassword';
 import Dashboard from './pages/Dashboard';
+import MyProfile from './components/core/Dashboard/MyProfile';
 
 function App() {
   return (
@@ -56,18 +57,25 @@ function App() {
         </OpenRoute>
        }
        />
-      </Routes>
 
 
-      <Route
+    <Route
         element={
           <PrivateRoute>
             <Dashboard/>
           </PrivateRoute>
      }
      >
-        
-     </Route>
+      <Route path="dashboard/my-profile" element={<MyProfile />} />
+      </Route>
+
+
+
+
+      </Routes>
+
+
+
 
 
 
