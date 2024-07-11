@@ -196,7 +196,7 @@ export function logout (navigate){
       try {
         dispatch(setToken(null));
         dispatch(setUser(null));
-        localStorage.removeItem("tokens");
+        localStorage.removeItem("token");
         localStorage.removeItem("user");
         
         toast.success("Logged Out");
