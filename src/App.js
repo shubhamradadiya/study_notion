@@ -11,6 +11,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import UpdatePassword from './pages/UpdatePassword';
 import Dashboard from './pages/Dashboard';
 import MyProfile from './components/core/Dashboard/MyProfile';
+import Settings from './components/core/Dashboard/Settings';
 
 function App() {
   return (
@@ -67,6 +68,8 @@ function App() {
      }
      >
       <Route path="dashboard/my-profile" element={<MyProfile />} />
+      <Route path="dashboard/Settings" element={<Settings />} />
+
       </Route>
 
 
