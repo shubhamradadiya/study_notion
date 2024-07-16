@@ -12,6 +12,7 @@ import UpdatePassword from './pages/UpdatePassword';
 import Dashboard from './pages/Dashboard';
 import MyProfile from './components/core/Dashboard/MyProfile';
 import Settings from './components/core/Dashboard/Settings';
+import Error from './pages/Error';
 
 function App() {
   return (
@@ -59,21 +60,21 @@ function App() {
        }
        />
 
+       {/*DASHBOARD */}
+          <Route
+              element={
+                <PrivateRoute>
+                  <Dashboard/>
+                </PrivateRoute>
+          }
+          >
+            <Route path="dashboard/my-profile" element={<MyProfile />} />
+            <Route path="dashboard/Settings" element={<Settings />} />
 
-    <Route
-        element={
-          <PrivateRoute>
-            <Dashboard/>
-          </PrivateRoute>
-     }
-     >
-      <Route path="dashboard/my-profile" element={<MyProfile />} />
-      <Route path="dashboard/Settings" element={<Settings />} />
-
-      </Route>
+          </Route>
 
 
-
+     <Route path='*' element={<Error/>}/>
 
       </Routes>
 
