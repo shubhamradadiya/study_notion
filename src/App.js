@@ -13,8 +13,15 @@ import Dashboard from './pages/Dashboard';
 import MyProfile from './components/core/Dashboard/MyProfile';
 import Settings from './components/core/Dashboard/Settings';
 import Error from './pages/Error';
+import { ACCOUNT_TYPE } from './utils/constants';
+import AddCourse from './components/core/Dashboard/AddCourse';
+
 
 function App() {
+
+  const  {user} = useSelector((state)=> state.profile);
+
+
   return (
     <div className=' w-screen min-h-screen flex flex-col font-inter bg-richblack-900'>
        <Navbar/>
@@ -70,6 +77,15 @@ function App() {
           >
             <Route path="dashboard/my-profile" element={<MyProfile />} />
             <Route path="dashboard/Settings" element={<Settings />} />
+
+            {/* only  access by Instructor */}
+            {user.accountType === ACCOUNT_TYPE.INSTRUCTOR &&
+              <>
+              <Route path="dashboard/add-course" element={<AddCourse />} />
+
+              </>
+
+            }
 
           </Route>
 
