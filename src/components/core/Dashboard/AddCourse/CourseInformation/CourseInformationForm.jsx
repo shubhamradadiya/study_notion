@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineCurrencyRupee } from 'react-icons/hi'
 import { fetchCourseCategories } from '../../../../../services/operations/courseDetailsAPI'
+import ChipInput from './ChipInput'
 
 const CourseInformationForm = () => {
 
@@ -136,6 +137,16 @@ const CourseInformationForm = () => {
             }
           </div>
 
+        {/* Tag */}
+        <ChipInput
+          setValue={setValue}
+          getValues={getValues}
+          register={register}
+          name="courseTags"
+          label="Tags"
+          errors={errors}
+          placeholder="Enter Tags and press Enter"
+        />
           
      </form>
   )
