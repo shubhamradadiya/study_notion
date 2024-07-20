@@ -79,7 +79,7 @@ function App() {
             <Route path="dashboard/Settings" element={<Settings />} />
 
             {/* only  access by Instructor */}
-            {user.accountType === ACCOUNT_TYPE.INSTRUCTOR &&
+            {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR &&
               <>
               <Route path="dashboard/add-course" element={<AddCourse />} />
 
