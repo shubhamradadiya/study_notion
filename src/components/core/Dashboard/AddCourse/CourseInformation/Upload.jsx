@@ -90,7 +90,13 @@ const Upload = ({setValue ,  getValue , register , name , label , errors,
             )
         }
       </div>
+        {errors[name] && (
+          <span className="ml-2 text-xs tracking-wide text-pink-200">
+            {label} is required
+          </span>
+        )
 
+        }
     </div>
   )
 }
