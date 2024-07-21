@@ -3,8 +3,12 @@ import { useForm } from 'react-hook-form'
 import { HiOutlineCurrencyRupee } from 'react-icons/hi'
 import { fetchCourseCategories } from '../../../../../services/operations/courseDetailsAPI'
 import ChipInput from './ChipInput'
+import Upload from './Upload'
+import { useSelector } from 'react-redux'
 
 const CourseInformationForm = () => {
+
+  const {editCourse, course} = useSelector((state) => state.course);
 
   const {
     register,
@@ -147,7 +151,16 @@ const CourseInformationForm = () => {
           errors={errors}
           placeholder="Enter Tags and press Enter"
         />
-          
+
+        {/* thumbnail */}
+        <Upload
+        name="courseImage"
+        label="Course Thumbnail"
+        register={register}
+        setValue={setValue}
+        errors={errors}
+        editData={editCourse ? course?.thumbnail : null}
+      />
      </form>
   )
 }
