@@ -5,6 +5,7 @@ import { fetchCourseCategories } from '../../../../../services/operations/course
 import ChipInput from './ChipInput'
 import Upload from './Upload'
 import { useSelector } from 'react-redux'
+import RequirementsField from './RequirementsField'
 
 const CourseInformationForm = () => {
 
@@ -161,6 +162,35 @@ const CourseInformationForm = () => {
         errors={errors}
         editData={editCourse ? course?.thumbnail : null}
       />
+
+      {/* course Benefits */}
+      <div className="flex flex-col space-y-2">
+        <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
+          Benefits of the course <sup className="text-pink-200">*</sup>
+        </label>
+        <textarea
+          id="courseBenefits"
+          placeholder="Enter benefits of the course"
+          {...register("courseBenefits", { required: true })}
+          className="form-style resize-x-none min-h-[130px] w-full"
+        />
+        {errors.courseBenefits && (
+          <span className="ml-2 text-xs tracking-wide text-pink-200">
+            Benefits of the course is required
+          </span>
+        )}
+      </div>
+
+        {/* requirement Field */}
+      <RequirementsField
+        name="courseRequirements"
+        label="Requirements/Instructions"
+        setValue={setValue}
+        getValues={getValues}
+        register={register}
+        errors={errors}
+      />
+
      </form>
   )
 }
