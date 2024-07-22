@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineCurrencyRupee } from 'react-icons/hi'
-import { fetchCourseCategories } from '../../../../../services/operations/courseDetailsAPI'
+import { addCourseDetails, fetchCourseCategories } from '../../../../../services/operations/courseDetailsAPI'
 import ChipInput from './ChipInput'
 import Upload from './Upload'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import RequirementsField from './RequirementsField'
+import { setCourse, setStep } from '../../../../../slices/courseSlice'
+import { MdNavigateNext } from 'react-icons/md'
+import IconBtn from '../../../../common/IconBtn'
+import { COURSE_STATUS } from '../../../../../utils/constants'
 
 const CourseInformationForm = () => {
 
   const {editCourse, course} = useSelector((state) => state.course);
+  const { token } = useSelector((state) => state.auth)
+
+  const dispatch = useDispatch()
 
   const {
     register,
@@ -36,10 +43,37 @@ const CourseInformationForm = () => {
     getCategory();
   },[])
 
+  // Submit data
+  const onSubmit = async (data) =>{
+    console.log("FORM  DATA.........................")
+    console.log(data)
+
+    const formData =  new FormData();
+    formData.append("courseName", data.courseTitle)
+    formData.append("courseDescription", data.courseShortDesc)
+    formData.append("price", data.coursePrice)
+    formData.append("tag", JSON.stringify(data.courseTags))
+    formData.append("whatYouWillLearn", data.courseBenefits)
+    formData.append("category", data.courseCategory)
+    formData.append("status", COURSE_STATUS.DRAFT)
+    formData.append("instructions", JSON.stringify(data.courseRequirements))
+    formData.append("thumbnailImage", data.courseImage)
+
+    setLoading(true)
+    const result = await addCourseDetails(formData, token)
+    if (result) {
+      dispatch(setStep(2))
+      dispatch(setCourse(result))
+    }
+    setLoading(false)
+
+    console.log(result)
+  }
+  
   return (
      <form
        className="space-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
-
+       onSubmit={handleSubmit(onSubmit)}
      >
      {/* Title */}
       <div className=' flex  flex-col space-y-2'>
@@ -190,6 +224,24 @@ const CourseInformationForm = () => {
         register={register}
         errors={errors}
       />
+
+      <div className="flex justify-end gap-x-2">
+        {editCourse && (
+          <button
+            onClick={() => dispatch(setStep(2))}
+            disabled={loading}
+            className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
+          >
+            Continue Wihout Saving
+          </button>
+        )}
+        <IconBtn
+          disabled={loading}
+          text={!editCourse ? "Next" : "Save Changes"}
+        >
+          <MdNavigateNext />
+        </IconBtn>
+      </div>
 
      </form>
   )
