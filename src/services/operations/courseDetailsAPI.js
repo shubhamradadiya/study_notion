@@ -105,3 +105,24 @@ export const getAllCourses = async () =>{
     return result
   }
   
+  export const editCourseDetails = async (data, token) => {
+    let result = null
+    const toastId = toast.loading("Loading...")
+    try {
+      const response = await apiConnector("POST", EDIT_COURSE_API, data, {
+        "Content-Type": "multipart/form-data",
+        Authorisation: `Bearer ${token}`,
+      })
+      console.log("EDIT COURSE API RESPONSE............", response)
+      if (!response?.data?.success) {
+        throw new Error("Could Not Update Course Details")
+      }
+      toast.success("Course Details Updated Successfully")
+      result = response?.data?.data
+    } catch (error) {
+      console.log("EDIT COURSE API ERROR............", error)
+      toast.error(error.message)
+    }
+    toast.dismiss(toastId)
+    return result
+  }
