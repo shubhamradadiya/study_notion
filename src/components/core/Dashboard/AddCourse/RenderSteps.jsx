@@ -2,6 +2,7 @@ import React from 'react'
 import { FaCheck } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import CourseInformationForm from './CourseInformation/CourseInformationForm'
+import CourseBuilderForm from './CourseBuilder/CourseBuilderForm'
 
 const RenderSteps = () => {
 
@@ -33,6 +34,7 @@ const RenderSteps = () => {
                                 
                                 <div className={`text-richblack-400 w-8  flex items-center border justify-center h-8 rounded-full bg-richblack-700  
                                   ${step === item.id ? " bg-yellow-900  text-yellow-50 border-yellow-50 ":""}
+                                  ${step>item.id ? " bg-yellow-50 border-yellow-100": ""}
                                 `}>
                                    { step > item.id ? 
                                     <FaCheck className="font-bold text-richblack-900" />
@@ -79,6 +81,7 @@ const RenderSteps = () => {
 
 
         { step === 1 && <CourseInformationForm/>}
+        { step === 2 && <CourseBuilderForm/>}
         </>
   )
 }
