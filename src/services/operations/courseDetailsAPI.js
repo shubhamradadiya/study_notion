@@ -134,7 +134,7 @@ export const updateSection = async(data , token) =>{
     let result=null ;
     const  toastId = toast.loading("Loading...");
     try {
-      const response =  await apiConnector("PUT",UPDATE_SECTION_API ,  data , {Authorisation: `Bearer ${token}`,})
+      const response =  await apiConnector("POST",UPDATE_SECTION_API ,  data , {Authorisation: `Bearer ${token}`,})
       console.log("UPDATE SECTION API RESPONSE............", response)
 
       if(!response?.data?.success){
@@ -218,4 +218,32 @@ export const createSubSection = async (data, token) => {
   }
   toast.dismiss(toastId)
   return result
+}
+
+//todo Delete Section
+
+export const deleteSection = async (data,token)=>{
+   let result = null;
+   const toastId = toast.loading("Loading...")
+    console.log(data)
+   try {
+    const  response = await apiConnector("POST" ,DELETE_SECTION_API , data, {
+      Authorisation: `Bearer ${token}`,
+    })
+
+    console.log("DELETE SECTION API RESPONSE............", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Delete Section")
+    }
+
+    toast.success("Course Section Deleted")
+    result = response?.data?.data
+    console.log(result)
+   } catch (error) {
+    console.log("DELETE SECTION API ERROR............", error)
+    toast.error(error.message)
+   }
+
+   toast.dismiss(toastId)
+   return result
 }

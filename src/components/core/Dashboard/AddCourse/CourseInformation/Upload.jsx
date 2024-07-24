@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { FiUploadCloud } from 'react-icons/fi';
+import { BigPlayButton, Player } from 'video-react';
+import "video-react/dist/video-react.css"
 
 const Upload = ({setValue ,  getValue , register , name , label , errors, 
     editData=null, 
@@ -16,8 +18,9 @@ const Upload = ({setValue ,  getValue , register , name , label , errors,
 
       const onDrop = useCallback(acceptedFiles => {
          const  file =  acceptedFiles[0];
-         setSelectFile(file);
          previewSettings(file);
+         setSelectFile(file);
+        
       }, [])
 
       const {getRootProps, getInputProps, isDragActive} = useDropzone({
@@ -45,7 +48,7 @@ const Upload = ({setValue ,  getValue , register , name , label , errors,
   return (
     <div className=' flex flex-col gap-2'>
       
-      <label htmlFor={name} className=' text-sm text-richblack-50'>{label} <span className=' text-pink-500'>*</span>
+      <label htmlFor={name} className=' text-sm text-richblack-50'>{label} {!viewData && <span className=' text-pink-500'>*</span>}
       </label>
       
       <div 
@@ -54,9 +57,11 @@ const Upload = ({setValue ,  getValue , register , name , label , errors,
         `}>
         {
           previewImage ?
-            (<div>
-              {!video && 
+            (<div className=' flex flex-col w-full p-6 '>
+              {!video ? 
                 <img src={previewImage} alt={name}/> 
+                :  <Player playsInline aspectRatio="16:9"  src={previewImage} />
+
               }
               {!viewData &&
                 <button
