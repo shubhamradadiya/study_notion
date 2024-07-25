@@ -6,9 +6,10 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import { RxDropdownMenu } from 'react-icons/rx'
 import { useDispatch, useSelector } from 'react-redux'
 import ConfirmationModal from '../../../../common/ConfirmationModal'
-import { deleteSection } from '../../../../../services/operations/courseDetailsAPI'
+import { deleteSection, deleteSubSection } from '../../../../../services/operations/courseDetailsAPI'
 import { setCourse } from '../../../../../slices/courseSlice'
 import SubSectionModal from './SubSectionModal'
+
 
 const NestedView = ({handleChangeEditSectionName}) => {
 
@@ -32,6 +33,25 @@ const NestedView = ({handleChangeEditSectionName}) => {
         }
         setConfirmationModal(null)
         console.log(course)
+    }
+
+    const handleDeleteSubSection = async (subSectionId , sectionId) =>{
+        const result =  await  deleteSubSection({subSectionId:subSectionId, sectionId:sectionId , token})
+
+        if(result){
+            
+            const updatedCourseContent = course.courseContent.map((section)=> 
+                section._id === sectionId  ? result : section
+            )
+
+            const updatedCourse = { ...course , courseContent: updatedCourseContent}
+
+            dispatch(setCourse(updatedCourse))
+       
+
+        }
+
+        setConfirmationModal(null)
     }
 
     const [ addSubSection ,  setAddSubSection] =  useState(null)
@@ -77,10 +97,43 @@ const NestedView = ({handleChangeEditSectionName}) => {
                         <AiFillCaretDown className=' text-xl text-richblack-300 '/>
                     </div>
                 </summary>
-                <div className=' px-6 pb-6'>
+                <div className=' px-6 pb-6 bg-richblack-700 rounded-lg '>
                     {section.subSection.map((data)=>(
-                        <div key={data?._id} onClick={()=>setViewSubSection(data)}>
+                        <div key={data?._id} onClick={()=>setViewSubSection(data)} className=' mt-1'>
                             
+                            <div className=' flex items-center justify-between py-2'>
+                               <div className='flex items-center gap-2 text-richblack-50 '>
+                                 <RxDropdownMenu className=' text-xl'/>
+                                 <p className=' font-bold'>{data?.title} </p>
+                               </div>
+
+                                <div className=' flex items-center gap-2'
+                                    onClick={(e)=>e.stopPropagation()}
+                                >
+                                    <button
+                                     onClick={()=>setEditSubSection({...data , sectionId : section._id})}
+                                    >
+                                     <MdEdit className=' text-lg  text-richblack-300 '/>
+                                    </button>
+
+                                    <button
+                                     onClick={()=>setConfirmationModal({
+                                        text1: "Delete this Sub-Section?",
+                                        text2: "This lecture will be deleted",
+                                        btn1Text:"Delete",
+                                        btn2Text:"Cancel",
+                                        btn1Handler: ()=> handleDeleteSubSection(data._id , section._id),
+                                        btn2Handler: () => setConfirmationModal(null),
+                                     })}
+                                    >
+                                      <RiDeleteBin6Line className=' text-lg text-richblack-300 '/>
+                                    </button>
+
+                                    <span className=' text-xl   text-richblack-300 font-bold'>|</span>
+                                    <AiFillCaretDown className=' text-lg text-richblack-300 '/>
+                                </div>
+
+                            </div>
                         </div>
                     ))
 

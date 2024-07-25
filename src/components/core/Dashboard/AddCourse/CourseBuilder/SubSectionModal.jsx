@@ -119,7 +119,7 @@ const SubSectionModal = ({
 
   return (
     <div className=' fixed  inset-0 z-[1000]  !mt-0 h-screen w-screen overflow-auto  flex flex-col justify-center bg-white bg-opacity-5 backdrop-blur-sm   items-center'>
-        <div className=' mt-36   mb-10 w-11/12 max-w-[700px] bg-richblack-800 border border-richblack-400 rounded-lg '>
+        <div className=' mt-36 scale-[0.9] w-11/12 max-w-[700px] bg-richblack-800 border border-richblack-400 rounded-lg '>
             <div className=' flex overflow-auto bg-richblack-700 text-richblack-5 items-center justify-between p-3 rounded-t-lg '>
                 <p>
                     {view && "Viewing"} {add && "Adding"} {edit && "Editing"} Lecture
@@ -134,7 +134,7 @@ const SubSectionModal = ({
             </div>
                 {/* form model */}
             <form
-             onClick={()=>handleSubmit(onSubmit)}
+             onClick={handleSubmit(onSubmit)}
             className=' space-y-8 px-9 py-10'
             >
                     <Upload 
