@@ -2,6 +2,10 @@ const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const  Section  =  require("../models/Section")
+const  SubSection = require("../models/SubSection");
+const CourseProgress = require("../models/CourseProgress");
+
 // Function to create a new course
 exports.createCourse = async (req, res) => {
 	try {
@@ -237,6 +241,8 @@ exports.editCourse = async(req, res) => {
 				}
 			}
 		  }
+
+		  await course.save()
 		  
 		  const updatedCourse = await Course.findOne({
 			_id: courseId,
@@ -273,3 +279,152 @@ exports.editCourse = async(req, res) => {
 	
 
 }
+
+exports.getInstructorCourses = async(req, res) => {
+	
+	try {
+		const  InstructorId= req.user.id
+
+	const instructorCourse = await Course.find({
+		instructor:InstructorId
+	}).sort({createdAt : -1})
+
+	res.status(200).json({
+		status: true,
+		data :  instructorCourse
+	})
+
+	} catch (error) {
+		console.log(error)
+		res.status(500).json({
+			success: false,
+			message:"Failed to get instructor Course",
+			error: error.message,
+		})
+	}
+
+}
+
+
+exports.deleteCourse = async (req, res) => {
+	try {
+	  const { courseId } = req.body
+  
+	  // Find the course
+	  const course = await Course.findById(courseId)
+	  if (!course) {
+		return res.status(404).json({ message: "Course not found" })
+	  }
+  
+	  // Unenroll students from the course
+	  const studentsEnrolled = course.studentsEnrolled
+	  for (const studentId of studentsEnrolled) {
+		await User.findByIdAndUpdate(studentId, {
+		  $pull: { courses: courseId },
+		})
+	  }
+  
+	  // Delete sections and sub-sections
+	  const courseSections = course.courseContent
+	  for (const sectionId of courseSections) {
+		// Delete sub-sections of the section
+		const section = await Section.findById(sectionId)
+		if (section) {
+		  const subSections = section.subSection
+		  for (const subSectionId of subSections) {
+			await SubSection.findByIdAndDelete(subSectionId)
+		  }
+		}
+  
+		// Delete the section
+		await Section.findByIdAndDelete(sectionId)
+	  }
+  
+	  // Delete the course
+	  await Course.findByIdAndDelete(courseId)
+  
+	  return res.status(200).json({
+		success: true,
+		message: "Course deleted successfully",
+	  })
+	} catch (error) {
+	  console.error(error)
+	  return res.status(500).json({
+		success: false,
+		message: "Server error",
+		error: error.message,
+	  })
+	}
+  }
+
+  exports.getFullCourseDetails = async (req, res) => {
+	try {
+	  const { courseId } = req.body
+	  const userId = req.user.id
+	  const courseDetails = await Course.findById({
+		_id: courseId,
+	  })
+		.populate({
+		  path: "instructor",
+		  populate: {
+			path: "additionalDetails",
+		  },
+		})
+		.populate("category")
+		.populate("ratingAndReviews")
+		.populate({
+		  path: "courseContent",
+		  populate: {
+			path: "subSection",
+		  },
+		})
+		.exec()
+  
+	  let courseProgressCount = await CourseProgress.findOne({
+		courseID: courseId,
+		
+	  })
+  
+	  console.log("courseProgressCount : ", courseProgressCount)
+  
+	  if (!courseDetails) {
+		return res.status(400).json({
+		  success: false,
+		  message: `Could not find course with id: ${courseId}`,
+		})
+	  }
+  
+	  // if (courseDetails.status === "Draft") {
+	  //   return res.status(403).json({
+	  //     success: false,
+	  //     message: `Accessing a draft course is forbidden`,
+	  //   });
+	  // }
+  
+	//   let totalDurationInSeconds = 0
+	//   courseDetails.courseContent.forEach((content) => {
+	// 	content.subSection.forEach((subSection) => {
+	// 	  const timeDurationInSeconds = parseInt(subSection.timeDuration)
+	// 	  totalDurationInSeconds += timeDurationInSeconds
+	// 	})
+	//   })
+  
+	
+  
+	  return res.status(200).json({
+		success: true,
+		data: {
+		  courseDetails,
+
+		  completedVideos: courseProgressCount?.completedVideos
+			? courseProgressCount?.completedVideos
+			: [],
+		},
+	  })
+	} catch (error) {
+	  return res.status(500).json({
+		success: false,
+		message: error.message,
+	  })
+	}
+  }

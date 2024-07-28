@@ -15,6 +15,8 @@ import Settings from './components/core/Dashboard/Settings';
 import Error from './pages/Error';
 import { ACCOUNT_TYPE } from './utils/constants';
 import AddCourse from './components/core/Dashboard/AddCourse';
+import MyCourses from './components/core/Dashboard/MyCourses';
+import EditCourse from './components/core/Dashboard/EditCourse';
 
 
 function App() {
@@ -81,8 +83,9 @@ function App() {
             {/* only  access by Instructor */}
             {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR &&
               <>
-              <Route path="dashboard/add-course" element={<AddCourse />} />
-
+                <Route path="dashboard/add-course" element={<AddCourse />} />
+                <Route  path='dashboard/my-courses' element={<MyCourses/>}/>
+                <Route  path='/dashboard/edit-course/:courseId' element={<EditCourse/> } />
               </>
 
             }
