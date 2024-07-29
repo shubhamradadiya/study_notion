@@ -28,7 +28,7 @@ exports.createCategory = async (req, res) => {
 exports.showAllCategories = async (req, res) => {
 	try {
         console.log("INSIDE SHOW ALL CATEGORIES");
-		const allCategorys = await Category.find({});
+		const allCategorys = await Category.find();
 		res.status(200).json({
 			success: true,
 			data: allCategorys,
@@ -66,6 +66,17 @@ exports.categoryPageDetails = async (req, res) => {
                                          .exec();
 
             //get top 10 selling courses
+            // Get top-selling courses across all categories
+            const allCategories = await Category.find()
+            .populate({
+            path: "courses",
+            match: { status: "Published" },
+            })
+            .exec()
+        const allCourses = allCategories.flatMap((category) => category.courses)
+        const mostSellingCourses = allCourses
+            .sort((a, b) => b.sold - a.sold)
+            .slice(0, 10)
             //HW - write it on your own
 
             //return response
@@ -74,6 +85,7 @@ exports.categoryPageDetails = async (req, res) => {
                 data: {
                     selectedCategory,
                     differentCategories,
+                    mostSellingCourses
                 },
             });
 
