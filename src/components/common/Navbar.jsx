@@ -51,8 +51,6 @@ const Navbar = () => {
         fetchSublinks();
     },[] )
 
-
-
     const matchRoute = (route) => {
         return matchPath({path:route}, location.pathname);
     }
@@ -62,7 +60,7 @@ const Navbar = () => {
       <div className='flex w-11/12 max-w-maxContent items-center justify-between'>
         {/* Image */}
       <Link to="/">
-        <img src={logo} width={160} height={42} loading='lazy'/>
+        <img src={logo} width={160} height={42} alt='logo' loading='lazy'/>
       </Link>
 
       {/* Nav Links */}
@@ -91,11 +89,24 @@ const Navbar = () => {
 
                                 {
                                     subLinks.length ? (
-                                            subLinks.map( (subLink, index) => (
-                                                <Link to={`${subLink.link}`} key={index}>
-                                                    <p>{subLink.name}</p>
-                                                </Link>
-                                            ) )
+                                        <>
+                                    {subLinks
+                                    ?.filter(
+                                        (subLink) => subLink?.courses?.length > 0
+                                    )
+                                    ?.map((subLink, i) => (
+                                        <Link
+                                        to={`/catalog/${subLink.name
+                                            .split(" ")
+                                            .join("-")
+                                            .toLowerCase()}`}
+                                        className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                        key={i}
+                                        >
+                                        <p>{subLink.name}</p>
+                                        </Link>
+                                    ))}
+                                </>
                                     ) : (<div></div>)
                                 }
 
