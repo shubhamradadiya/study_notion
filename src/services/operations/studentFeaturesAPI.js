@@ -55,7 +55,7 @@ export async function BuyCourse(
         courses,
       },
       {
-        Authorization: `Bearer ${token}`,
+        Authorisation: `Bearer ${token}`,
       }
     )
 
@@ -74,7 +74,7 @@ export async function BuyCourse(
       description: "Thank you for Purchasing the Course.",
       image: rzpLogo,
       prefill: {
-        name: `${user_details.firstName} ${user_details.lastName}`,
+        name: `${user_details?.firstName} ${user_details?.lastName}`,
         email: user_details.email,
       },
       handler: function (response) {
@@ -102,7 +102,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
   dispatch(setPaymentLoading(true))
   try {
     const response = await apiConnector("POST", COURSE_VERIFY_API, bodyData, {
-      Authorization: `Bearer ${token}`,
+      Authorisation: `Bearer ${token}`,
     })
 
     console.log("VERIFY PAYMENT RESPONSE FROM BACKEND............", response)
@@ -134,7 +134,7 @@ async function sendPaymentSuccessEmail(response, amount, token) {
         amount,
       },
       {
-        Authorization: `Bearer ${token}`,
+        Authorisation: `Bearer ${token}`,
       }
     )
   } catch (error) {

@@ -6,7 +6,7 @@ const {courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmail
 const { default: mongoose } = require("mongoose");
 const CourseProgress = require("../models/CourseProgress");
 const { paymentSuccessEmail } = require("../mail/templates/paymentSuccessEmail");
-
+const crypto = require("crypto")
 
 //todo :  when  we try  to multiple course init
 
@@ -92,10 +92,9 @@ exports.verifyPayment = async (req, res) => {
   }
 
   
-  let body = razorpay_order_id + "|" + razorpay_payment_id
+  let body = `${razorpay_order_id}` + "|" + `${razorpay_payment_id}`
   
-  const expectedSignature = crypto
-  .createHmac("sha256", process.env.RAZORPAY_SECRET)
+  const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET)
   .update(body.toString())
   .digest("hex")
 
