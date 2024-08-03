@@ -5,13 +5,13 @@ import RatingStars from '../../common/RatingStars'
 
 const CourseCard = ({course , Height}) => {
 
-    const [avgReviewCount ,  setAvgReviewCount] = useState(0)
-    // useEffect(() => {
-    //     const count = GetAvgRating(course?.ratingAndReviews)
-    //     setAvgReviewCount(count)
-    //   }, [course])
+    const [avgReviewCount ,  setAvgReviewCount] = useState(3)
+    useEffect(() => {
+        // const count = GetAvgRating(course?.ratingAndReviews)
+        // setAvgReviewCount(count)
+      }, [course])
   return (
-    <Link to={`/catalog/${course._id}`}>
+    <Link to={`/courses/${course._id}`}>
         <div>
             <div className="rounded-lg">
                 <img
@@ -29,9 +29,9 @@ const CourseCard = ({course , Height}) => {
                 <div className="flex items-center gap-2">
                     <span className="text-yellow-5">{avgReviewCount || 0}</span>
                     <RatingStars Review_Count={avgReviewCount} />
-                    {/* <span className="text-richblack-400">
+                    <span className="text-richblack-400">
                         {course?.ratingAndReviews?.length} Ratings
-                    </span> */}
+                    </span>
                 </div>
                 <p className="text-xl text-richblack-5">Rs. {course?.price}</p>
             </div>

@@ -142,7 +142,7 @@ const Navbar = () => {
                         <GrCart/>
                         {
                             totalItems > 0 && (
-                                <span>
+                                <span className=' absolute -top-2 font-bold -right-2  text-yellow-50  rounded-full text-xs'>
                                     {totalItems}
                                 </span>
                             )
