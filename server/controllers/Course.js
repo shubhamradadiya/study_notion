@@ -5,6 +5,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const  Section  =  require("../models/Section")
 const  SubSection = require("../models/SubSection");
 const CourseProgress = require("../models/CourseProgress");
+const { convertSecondsToDuration } = require("../utils/secToDuration");
 
 // Function to create a new course
 exports.createCourse = async (req, res) => {
@@ -312,7 +313,8 @@ exports.getInstructorCourses = async(req, res) => {
 exports.deleteCourse = async (req, res) => {
 	try {
 	  const { courseId } = req.body
-  
+		const InstructorId = req.user.id
+
 	  // Find the course
 	  const course = await Course.findById(courseId)
 	  if (!course) {
@@ -326,7 +328,10 @@ exports.deleteCourse = async (req, res) => {
 		  $pull: { courses: courseId },
 		})
 	  }
-  
+	  
+
+	
+
 	  // Delete sections and sub-sections
 	  const courseSections = course.courseContent
 	  for (const sectionId of courseSections) {
@@ -342,7 +347,15 @@ exports.deleteCourse = async (req, res) => {
 		// Delete the section
 		await Section.findByIdAndDelete(sectionId)
 	  }
-  
+	  
+		// Delete the course from the instructor's list of courses
+		if (InstructorId) {
+		await User.findByIdAndUpdate(InstructorId, {
+			$pull:{
+				courses:courseId}
+		})
+		}
+
 	  // Delete the course
 	  await Course.findByIdAndDelete(courseId)
   
@@ -385,7 +398,7 @@ exports.deleteCourse = async (req, res) => {
   
 	  let courseProgressCount = await CourseProgress.findOne({
 		courseID: courseId,
-		
+		userId: userId,
 	  })
   
 	  console.log("courseProgressCount : ", courseProgressCount)
@@ -397,28 +410,29 @@ exports.deleteCourse = async (req, res) => {
 		})
 	  }
   
-	  // if (courseDetails.status === "Draft") {
-	  //   return res.status(403).json({
-	  //     success: false,
-	  //     message: `Accessing a draft course is forbidden`,
-	  //   });
-	  // }
+	  if (courseDetails.status === "Draft") {
+	    return res.status(403).json({
+	      success: false,
+	      message: `Accessing a draft course is forbidden`,
+	    });
+	  }
   
-	//   let totalDurationInSeconds = 0
-	//   courseDetails.courseContent.forEach((content) => {
-	// 	content.subSection.forEach((subSection) => {
-	// 	  const timeDurationInSeconds = parseInt(subSection.timeDuration)
-	// 	  totalDurationInSeconds += timeDurationInSeconds
-	// 	})
-	//   })
+	  let totalDurationInSeconds = 0
+	  courseDetails.courseContent.forEach((content) => {
+		content.subSection.forEach((subSection) => {
+		  const timeDurationInSeconds = parseInt(subSection.timeDuration)
+		  totalDurationInSeconds += timeDurationInSeconds
+		})
+	  })
   
-	
+	  const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+
   
 	  return res.status(200).json({
 		success: true,
 		data: {
 		  courseDetails,
-
+		  totalDuration,
 		  completedVideos: courseProgressCount?.completedVideos
 			? courseProgressCount?.completedVideos
 			: [],
