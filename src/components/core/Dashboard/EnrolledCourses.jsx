@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import ProgressBar from "@ramonak/react-progress-bar"
 import { useSelector } from 'react-redux'
 import { getUserEnrolledCourses } from '../../../services/operations/profile'
+import { useNavigate } from 'react-router-dom'
 
 const EnrolledCourses = () => {
 
+    const  navigate = useNavigate()
     const {token} =  useSelector((state) => state.auth)
     const [enrolledCourses, setEnrolledCourses] = useState([])
     useEffect(()=>{
@@ -16,6 +18,7 @@ const EnrolledCourses = () => {
         })()
     },[])
        
+
   return (
     <>
         <div
@@ -43,7 +46,11 @@ const EnrolledCourses = () => {
                     </div>
                     {/* Course Names */}
                     { enrolledCourses.map((course , i ) =>(
-                        <div key={i} className=' flex items-center'>
+                        <div key={i} className=' flex items-center'
+                            onClick={
+                                ()=>{navigate(`/view-course/${course?._id}/section/${course?.courseContent?.[0]?._id}/sub-section/${course?.courseContent?.[0]?.subSection?.[0]?._id}`)}
+                            }
+                        >
                             <div className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3">
                                 <img
                                 src={course.thumbnail}
@@ -59,12 +66,12 @@ const EnrolledCourses = () => {
                                 </div>
                             </div>
 
-                            <div className="w-1/4 px-3 py-3">2h</div>
+                            <div className="w-1/4 px-3 py-3">{course?.totalDuration}</div>
 
                             <div className=' flex  w-1/5  flex-col gap-2'>
-                                <p>Progress: {course.progressPercentage || 30}%</p>
+                                <p>Progress: {course?.progressPercentage || 0}%</p>
                                 <ProgressBar
-                                completed={30 || 0}
+                                completed={course?.progressPercentage || 0}
                                 height="8px"
                                 isLabelVisible={false}
                             />

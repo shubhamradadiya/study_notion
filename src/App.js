@@ -21,6 +21,8 @@ import Catalog from './pages/Catalog';
 import CourseDetails from './pages/CourseDetails';
 import Cart from './components/core/Cart';
 import EnrolledCourses from './components/core/Dashboard/EnrolledCourses';
+import ViewCourse from './pages/ViewCourse';
+import VideoDetails from './components/core/ViewCourse/VideoDetails';
 
 
 function App() {
@@ -105,7 +107,23 @@ function App() {
 
           </Route>
 
+            <Route
+              element={
+                <PrivateRoute>
+                  <ViewCourse/>
+                </PrivateRoute>
+              }
+            >
+              {user?.accountType === ACCOUNT_TYPE.STUDENT &&
+                <>
+                  <Route path='/view-course/:courseId/section/:sectionId/sub-section/:subSectionId'
+                  element={<VideoDetails/>}
+                  ></Route>
+                  </>
+              }
+            </Route>
 
+          {/* 404  page */}
      <Route path='*' element={<Error/>}/>
 
       </Routes>
