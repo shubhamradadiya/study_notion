@@ -5,7 +5,8 @@ import { apiConnector } from "../apiconnector";
 
 
 const {
-    GET_USER_ENROLLED_COURSES_API
+    GET_USER_ENROLLED_COURSES_API,
+    GET_INSTRUCTOR_DATA_API,
 }= profileEndpoints
 
 
@@ -33,3 +34,21 @@ export  async  function getUserEnrolledCourses (token){
     toast.dismiss(toastId)
     return result
 }
+
+export async function getInstructorData(token) {
+    const toastId = toast.loading("Loading...")
+    let result = []
+    try {
+      const response = await apiConnector("GET", GET_INSTRUCTOR_DATA_API, null, {
+        Authorisation: `Bearer ${token}`,
+      })
+      console.log("GET_INSTRUCTOR_DATA_API API RESPONSE............", response)
+      result = response?.data?.courses
+    } catch (error) {
+      console.log("GET_INSTRUCTOR_DATA_API API ERROR............", error)
+      toast.error("Could Not Get Instructor Data")
+    }
+    toast.dismiss(toastId)
+    return result
+  }
+  

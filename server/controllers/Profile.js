@@ -3,6 +3,8 @@ const Profile = require("../models/Profile");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
+const Course =  require("../models/Course")
+
 // Method for updating a profile
 exports.updateProfile = async (req, res) => {
 	try {
@@ -182,3 +184,34 @@ exports.getEnrolledCourses = async (req, res) => {
       })
     }
 };
+
+exports.instructorDashboard = async (req, res) => {
+
+	try {
+		
+	const courseDetails = await Course.find({ instructor: req.user.id })
+
+	const courseData = courseDetails.map((course)=>{
+		const totalStudentsEnrolled = course.studentsEnrolled.length;
+		const totalAmountGenerated = totalStudentsEnrolled * course.price 
+
+		const courseDataWithStats = {
+			_id: course.id,
+			courseName: course.courseName,
+			courseDescription : course.courseDescription,
+			// Include other course properties as needed
+			totalStudentsEnrolled,
+			totalAmountGenerated,
+		}
+
+		return courseDataWithStats
+	})
+
+	res.status(200).json({ courses: courseData })
+
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: "Server Error" })
+	}
+
+}
